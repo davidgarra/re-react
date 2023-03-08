@@ -45,7 +45,9 @@ const useState = <T>(initial: T): [T, SetState<T>] => {
     hook.state = action(hook.state);
   });
 
-  const setState: SetState<T> = (action) => {
+  const setState: SetState<T> = (actionOrState) => {
+    const action =
+      actionOrState instanceof Function ? actionOrState : () => actionOrState;
     hook.queue.push(action as Action);
     assertIsDefined(globalState.currentRoot, 'currentRoot');
     const root: Fiber = {
