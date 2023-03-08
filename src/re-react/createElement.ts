@@ -11,7 +11,7 @@ const createElement: CreateElement = (type, props, ...children) => ({
   props: {
     ...props,
     children: children.flatMap((child) =>
-      typeof child === 'object' ? child : createTextElement(child),
+      typeof child === 'object' || child === false ? child : createTextElement(child),
     ),
   },
 });
