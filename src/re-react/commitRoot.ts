@@ -12,6 +12,14 @@ const commitRoot = () => {
   globalState.wipTreeRoot = null;
 };
 
+const runEffectDestructors = (fiber: Fiber) => {
+  fiber.hooks?.forEach((hook) => {
+    if (hook.type === 'useEffect') {
+      hook.destructor?.();
+    }
+  });
+};
+
 const commitNode = (fiber: Fiber, parentNode: Node): boolean => {
   // add, remove or update the node
   if (fiber.effectTag === 'PLACEMENT' && fiber.node != null) {
@@ -20,6 +28,7 @@ const commitNode = (fiber: Fiber, parentNode: Node): boolean => {
     assertIsDefined(fiber.alternate, 'fiber.alternate');
     updateNode(fiber.node, fiber.alternate.props, fiber.props);
   } else if (fiber.effectTag === 'DELETION') {
+    runEffectDestructors(fiber);
     deleteNode(fiber, parentNode);
     return false;
   }
