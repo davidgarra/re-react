@@ -56,17 +56,17 @@ Re-React was developed as part of an in-depth study of React's logic, for person
 
 The main features of Re-React include:
 - **Reconciliation**: Based on the fiber tree data structure, after any update from the UI only the actual changes are passed to the renderer.
-- **Interruptible Rendering**: The work is split into little chunks of works, so that the rendering can be interrupted if browser needs to do high priority stuff like handling user input or keeping an animation smooth
-- **Function Component**: Just like in React, it is possible to define custom components in the form of JavaScript functions.
+- **Interruptible Rendering**: The work is split into little chunks of works, so that the rendering can be interrupted if the browser needs to do high priority stuff like handling user input or keeping an animation smooth
+- **Function Component**: Just like in React, it is possible to define custom components in the form of a JavaScript function.
 - **Hook**: Currently, the following hooks have been implemented:
    - _useState_
    - _useEffect_
 
 The additional features (not implemented in the inspiring project) are:
 - Handling of array of children
-- Conditional rendering using false value
-- State update for the useState hook using an object
-- Implementation of useEffect hook
+- Conditional rendering using `false` value
+- State update for the _useState_ hook using an object
+- Implementation of the _useEffect_ hook
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
