@@ -2,9 +2,7 @@ import type { Hook } from '../hooks';
 
 export type Props<P = {}> = { [K in keyof P]: P[K] } & { key?: string };
 
-export type Child = Element | Element[];
-
-export type PropsWithChildren<P = {}> = Props<P> & { children?: Child[] };
+export type PropsWithChildren<P = {}> = Props<P> & { children?: Element[] };
 
 export type HtmlElement = {
   type: keyof HTMLElementTagNameMap;
@@ -22,7 +20,7 @@ export type TextElement = {
 export type ArrayElement = {
   type: 'ARRAY_ELEMENT';
   props: {
-    children: Child[];
+    children: HtmlElement[];
   };
 };
 

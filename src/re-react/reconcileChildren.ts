@@ -1,5 +1,5 @@
 import { globalState } from './globalState';
-import type { Child, Element, Fiber } from './types/common';
+import type { Element, Fiber, HtmlElement } from './types/common';
 import { assertIsDefined } from './types/utils';
 
 const reconcileNode = (
@@ -42,8 +42,30 @@ const reconcileNode = (
   return newFiber;
 };
 
-const reconcileChildren = (fiber: Fiber, children: Child[]) => {
-  let oldFiber = fiber.alternate?.child ?? null; // last rendered fiber
+const getNext = (
+  fiber: Fiber,
+  oldFiber: Fiber | null,
+  children: Element[],
+  index: number,
+): [Fiber | null, Element] => {
+  const element = children[index];
+  if (fiber.type === 'ARRAY_ELEMENT') {
+    oldFiber = fiber.alternate?.child ?? null;
+    const key = (element as HtmlElement)?.props.key;
+    while (oldFiber != null && oldFiber.props.key !== key) {
+      oldFiber = oldFiber.sibling ?? null;
+    }
+    return [oldFiber, element];
+  }
+
+  if (index === 0) return [fiber.alternate?.child ?? null, element];
+
+  return [oldFiber?.sibling ?? null, element];
+};
+
+const reconcileChildren = (fiber: Fiber, children: Element[]) => {
+  let oldFiber: Fiber | null = null; // last rendered fiber
+  let element: Element | null = null; // new element to reconcile
   let prevSibling: Fiber | null = null;
 
   /**
@@ -52,13 +74,9 @@ const reconcileChildren = (fiber: Fiber, children: Child[]) => {
    */
   let index = 0;
   while (index < children.length || oldFiber != null) {
-    const element = children[index]; // new element to reconcile
+    [oldFiber, element] = getNext(fiber, oldFiber, children, index);
 
     const newFiber = reconcileNode(fiber, oldFiber, element);
-
-    if (oldFiber) {
-      oldFiber = oldFiber.sibling ?? null;
-    }
 
     if (index === 0) {
       fiber.child = newFiber;

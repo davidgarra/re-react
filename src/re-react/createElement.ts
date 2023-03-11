@@ -2,6 +2,7 @@ import type {
   ArrayElement,
   Atom,
   Element,
+  HtmlElement,
   NullElement,
   Props,
   TextElement,
@@ -13,6 +14,7 @@ type CreateElement = (
   ...children: (Atom | Element)[]
 ) => Element;
 
+// TODO fare in modo che ritorni un HtmlElement in caso di HtmlElement come input
 const createChild = (child: Atom | Element): Element => {
   if (Array.isArray(child)) {
     return createArrayElement(child);
@@ -41,10 +43,16 @@ const createTextElement = (text: string): TextElement => ({
   },
 });
 
-const createArrayElement = (child: (Atom | Element)[]): ArrayElement => ({
+const createArrayElement = (child: HtmlElement[]): ArrayElement => ({
   type: 'ARRAY_ELEMENT',
   props: {
-    children: child.map(createChild),
+    children: child.map(
+      (c, idx) =>
+        createChild({
+          ...c,
+          props: { key: idx.toString(), ...c.props },
+        }) as HtmlElement, // TODO fare in modo che ritorni un HtmlElement in caso di HtmlElement come input
+    ),
   },
 });
 

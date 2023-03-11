@@ -6,6 +6,18 @@ import {
   useState,
 } from '@re-react';
 
+function shuffle<T>(array: T[]) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+const inputList = [
+  <input key="uno" type="text" name="uno" placeholder="uno" />,
+  <input key="due" type="text" name="due" placeholder="due" />,
+  <input key="tre" type="text" name="tre" placeholder="tre" />,
+];
+
+const list = shuffle([0, 1, 2]).map((index) => inputList[index]);
+
 const Counter: FunctionComponent = () => {
   const [counter, setCounter] = useState(0);
 
@@ -37,6 +49,7 @@ const Counter: FunctionComponent = () => {
       >
         {'-'}
       </button>
+      {shuffle([0, 1, 2]).map((index) => inputList[index])}
     </div>
   );
 };
