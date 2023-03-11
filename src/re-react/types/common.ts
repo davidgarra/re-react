@@ -1,15 +1,41 @@
 import type { Hook } from '../hooks';
 
-export type Props<P = {}> = { [K in keyof P]: P[K] };
+export type Props<P = {}> = { [K in keyof P]: P[K] } & { key?: string };
 
-export type Children = Element[];
+export type Child = Element | Element[];
 
-export type PropsWithChildren<P = {}> = Props<P> & { children?: Children };
+export type PropsWithChildren<P = {}> = Props<P> & { children?: Child[] };
 
-export type Element = {
-  type: keyof HTMLElementTagNameMap | 'TEXT_ELEMENT';
+export type HtmlElement = {
+  type: keyof HTMLElementTagNameMap;
   props: PropsWithChildren;
 };
+
+export type TextElement = {
+  type: 'TEXT_ELEMENT';
+  props: {
+    nodeValue: string;
+    children: never[];
+  };
+};
+
+export type ArrayElement = {
+  type: 'ARRAY_ELEMENT';
+  props: {
+    children: Child[];
+  };
+};
+
+export type NullElement = {
+  type: 'NULL_ELEMENT';
+  props: {
+    children: never[];
+  };
+};
+
+export type Element = HtmlElement | TextElement | ArrayElement | NullElement;
+
+export type Atom = string | number | boolean | null | undefined; // the smallest unit of data taht can be passed as a children to createElement
 
 export type Node = HTMLElement | Text;
 

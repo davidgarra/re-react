@@ -1,5 +1,5 @@
 import { globalState } from './globalState';
-import type { Element, Fiber } from './types/common';
+import type { Child, Element, Fiber } from './types/common';
 import { assertIsDefined } from './types/utils';
 
 const reconcileNode = (
@@ -42,7 +42,7 @@ const reconcileNode = (
   return newFiber;
 };
 
-const reconcileChildren = (fiber: Fiber, children: Element[]) => {
+const reconcileChildren = (fiber: Fiber, children: Child[]) => {
   let oldFiber = fiber.alternate?.child ?? null; // last rendered fiber
   let prevSibling: Fiber | null = null;
 
