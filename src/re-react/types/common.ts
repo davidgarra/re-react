@@ -2,13 +2,20 @@ import type { Hook } from '../hooks';
 
 export type Props<P = {}> = { [K in keyof P]: P[K] };
 
-export type Children = Element[];
+export type PropsWithChildren<P = {}> = Props<P> & { children?: Element[] };
 
-export type PropsWithChildren<P = {}> = Props<P> & { children?: Children };
+export type Element = HtmlElement | TextElement;
 
-export type Element = {
-  type: keyof HTMLElementTagNameMap | 'TEXT_ELEMENT';
+export type HtmlElement = {
+  type: keyof HTMLElementTagNameMap;
   props: PropsWithChildren;
+};
+
+export type TextElement = {
+  type: 'TEXT_ELEMENT';
+  props: {
+    nodeValue: string;
+  };
 };
 
 export type Node = HTMLElement | Text;
